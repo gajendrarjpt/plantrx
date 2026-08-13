@@ -23,8 +23,11 @@ const PUBLISHER_ID_IS_PLACEHOLDER = PLACEHOLDER_ID.includes("XXXX");
 export default function AdSlot() {
   useEffect(() => {
     // Only hydrate the slot once real IDs are configured. With placeholders,
-    // pushing would send Google a request with fake client/slot IDs.
-    if (PUBLISHER_ID_IS_PLACEHOLDER) return;
+    // pushing would send Google a request with fake client/slot IDs. And on
+    // Android this whole effect is dead code (AdSense never runs there —
+    // monetization is AdMob), kept as a belt-and-braces guard in case the
+    // build ever loses tree-shaking.
+    if (PUBLISHER_ID_IS_PLACEHOLDER || IS_ANDROID) return;
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch {
