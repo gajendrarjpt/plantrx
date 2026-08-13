@@ -9,6 +9,13 @@ dist-ssr/
 .env
 .env.*
 !.env.example
+!.env.android.example
+
+# Android signing material — never commit
+*.keystore
+*.jks
+*.p12
+keystore.properties
 
 # Local API dev server artifacts
 *.log
@@ -21,3 +28,6 @@ dist-ssr/
 Thumbs.db
 .idea/
 .vscode/
+
+# Freebuff internal files
+.freebuff/

@@ -4,8 +4,26 @@ import tailwindcss from "@tailwindcss/vite";
 import { fileURLToPath, URL } from "node:url";
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
+export default defineConfig(({ mode }) => ({
+  plugins: [
+    react(),
+    tailwindcss(),
+    {
+      // The AdSense verification snippet belongs on the website only. Android
+      // monetization goes through AdMob, so strip the adsbygoogle script from
+      // the Android (Capacitor) build while leaving the web head untouched.
+      name: "strip-adsense-for-android",
+      transformIndexHtml(html) {
+        if (mode === "android") {
+          return html.replace(
+            /<script async src="https:\/\/pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js[^>]*><\/script>/,
+            ""
+          );
+        }
+        return html;
+      },
+    },
+  ],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -31,4 +49,4 @@ export default defineConfig({
       "/api": "http://localhost:8787",
     },
   },
-});
+}));

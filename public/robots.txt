@@ -1,0 +1,7 @@
+# PlantRx — allow normal crawling.
+User-agent: *
+Allow: /
+
+# TODO: replace the domain below with your real site domain after deploying
+# (keep it in sync with src/lib/seo.js SITE_URL).
+Sitemap: https://plantrx.example.com/sitemap.xml

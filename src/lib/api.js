@@ -1,11 +1,15 @@
+import { API_BASE_URL } from "./config";
+
 /**
- * Talks to the Vercel serverless function at /api/diagnose.
- * The AI model is always called server-side — never from the browser.
+ * Talks to the PlantRx backend at /api/diagnose.
+ * - Web: relative URL (same origin on Vercel / dev proxy).
+ * - Android: absolute production URL from VITE_API_BASE_URL.
+ * The AI model is always called server-side — never from the app.
  */
 export async function diagnose(imageBase64, note) {
   let res;
   try {
-    res = await fetch("/api/diagnose", {
+    res = await fetch(`${API_BASE_URL}/api/diagnose`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ imageBase64, note: (note ?? "").trim() }),

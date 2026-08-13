@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Webcam from "react-webcam";
 import { useDropzone } from "react-dropzone";
@@ -12,6 +12,7 @@ import {
   RotateCcw,
   ScanSearch,
   TriangleAlert,
+  WifiOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,8 +51,23 @@ export default function CaptureScreen({ onSubmit, onCancel }) {
   const [cameraOn, setCameraOn] = useState(false);
   const [cameraError, setCameraError] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [online, setOnline] = useState(
+    typeof navigator === "undefined" ? true : navigator.onLine
+  );
 
   const webcamRef = useRef(null);
+
+  // Keep the offline banner honest: update when connectivity changes.
+  useEffect(() => {
+    const goOnline = () => setOnline(true);
+    const goOffline = () => setOnline(false);
+    window.addEventListener("online", goOnline);
+    window.addEventListener("offline", goOffline);
+    return () => {
+      window.removeEventListener("online", goOnline);
+      window.removeEventListener("offline", goOffline);
+    };
+  }, []);
 
   /* ---------- Shared: turn a File or {dataUrl,source} into a reviewable draft ---------- */
   const makeDraft = useCallback(async (input, fromCamera) => {
@@ -182,7 +198,9 @@ export default function CaptureScreen({ onSubmit, onCancel }) {
       // Compress to a JPEG under 300 KB — exactly what gets sent (never the original).
       const mainFile = await compressForDiagnosis(photo.source);
       const imageBase64 = await readFileAsBase64(mainFile);
-      await onSubmit({ imageBase64, note });
+      // photoDataUrl is transient (memory only) so the result can show the
+      // photo — it is never stored in history or sent anywhere extra.
+      await onSubmit({ imageBase64, note, photoDataUrl: photo.dataUrl });
     } catch {
       toast.error("Couldn't prepare that photo", { description: "Please try again." });
       setBusy(false);
@@ -213,6 +231,19 @@ export default function CaptureScreen({ onSubmit, onCancel }) {
           A clear photo of the leaves works best — good light helps too.
         </p>
       </motion.div>
+
+      {/* Offline notice — diagnosis needs the network */}
+      {!online && (
+        <div
+          role="status"
+          className="mt-4 flex items-start gap-2.5 rounded-xl border border-sun-300/70 bg-sun-200/40 p-3"
+        >
+          <WifiOff className="mt-0.5 h-4 w-4 shrink-0 text-sun-600" aria-hidden="true" />
+          <p className="text-sm font-semibold text-moss-800">
+            You're offline. Connect to the internet to diagnose your plant.
+          </p>
+        </div>
+      )}
 
       {/* ---------- Photo area ---------- */}
       <div className="mt-5">

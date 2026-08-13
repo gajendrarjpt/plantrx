@@ -1,14 +1,20 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import {
+  ArrowRight,
+  BookOpen,
   Camera,
   ChevronRight,
   Leaf,
   NotebookPen,
+  ScanSearch,
   ShieldCheck,
   Sprout,
+  Timer,
   Trash2,
+  Wallet,
+  UserRoundX,
 } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,10 +25,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import BrandMark from "./BrandMark";
 import SectionHeading from "./SectionHeading";
 import EmptyHistory from "./EmptyHistory";
-import PrivacyDialog from "./PrivacyDialog";
+import Accordion from "./Accordion";
+import { FAQS } from "@/data/faq";
+import { GUIDES } from "@/data/guides";
+import { ROUTES } from "@/lib/routes";
 
 const STEPS = [
   {
@@ -38,7 +46,30 @@ const STEPS = [
   {
     icon: Sprout,
     title: "Fix",
-    text: "Get a likely diagnosis and a simple care plan.",
+    text: "Get a likely issue and a simple care plan.",
+  },
+];
+
+const BENEFITS = [
+  {
+    icon: UserRoundX,
+    title: "No account",
+    text: "No sign-up, no login, no profile.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Private",
+    text: "Photos aren't stored by PlantRx.",
+  },
+  {
+    icon: Timer,
+    title: "Seconds",
+    text: "A likely answer in 2–8 seconds.",
+  },
+  {
+    icon: Wallet,
+    title: "Free",
+    text: "No subscription, no hidden cost.",
   },
 ];
 
@@ -53,9 +84,9 @@ function formatDate(ts) {
   }
 }
 
-export default function HomeScreen({ onStart, history, onOpenResult, onClearHistory }) {
+export default function HomeScreen({ onStart, history, onOpenResult, onClearHistory, onNavigate }) {
   return (
-    <div className="mx-auto w-full max-w-md px-4 pb-16 pt-10 sm:pt-14 lg:max-w-xl">
+    <div className="mx-auto w-full max-w-3xl px-4 pb-16 pt-10">
       {/* ---------- Hero ---------- */}
       <motion.header
         className="text-center"
@@ -63,25 +94,19 @@ export default function HomeScreen({ onStart, history, onOpenResult, onClearHist
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        <div className="flex items-center justify-center gap-3">
-          <BrandMark size="md" />
-          <span className="font-display text-2xl font-semibold tracking-tight text-moss-800">
-            Plant<span className="text-moss-500">Rx</span>
-          </span>
-        </div>
-
-        <h1 className="mx-auto mt-7 max-w-xs text-display text-moss-800 sm:max-w-sm">
+        <h1 className="mx-auto max-w-xl text-display text-moss-800">
           Your plant's
           <br />
-          doctor is here.
+          care assistant is here.
         </h1>
-        <p className="mx-auto mt-4 max-w-xs text-body leading-relaxed text-moss-600">
-          Snap a photo. Get a likely diagnosis and a simple plan to help your plant recover.
+        <p className="mx-auto mt-4 max-w-md text-body leading-relaxed text-moss-600">
+          Snap a photo of a struggling houseplant and get a likely diagnosis and a
+          simple plan to help it recover — in seconds.
         </p>
 
         {/* Primary CTA */}
         <motion.div
-          className="mt-8"
+          className="mx-auto mt-8 max-w-sm"
           whileTap={{ scale: 0.98 }}
           transition={{ type: "spring", stiffness: 400, damping: 22 }}
         >
@@ -99,11 +124,38 @@ export default function HomeScreen({ onStart, history, onOpenResult, onClearHist
         <p className="mt-3 text-caption text-moss-600">
           Free · No sign-up · Photos aren't stored by PlantRx
         </p>
-        <p className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-moss-200 bg-white/70 px-3 py-1 text-[11px] font-semibold text-moss-700">
-          <ShieldCheck className="h-3.5 w-3.5 text-moss-500" aria-hidden="true" />
-          Your photo is analyzed, not saved by PlantRx
-        </p>
       </motion.header>
+
+      {/* ---------- Benefits strip ---------- */}
+      <motion.ul
+        {...REVEAL}
+        viewport={VIEWPORT}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4"
+      >
+        {BENEFITS.map((b) => (
+          <li
+            key={b.title}
+            className="flex flex-col items-center gap-1.5 rounded-2xl border border-moss-100 bg-white/80 p-4 text-center shadow-card"
+          >
+            <b.icon className="h-5 w-5 text-moss-500" aria-hidden="true" />
+            <p className="text-sm font-bold text-moss-800">{b.title}</p>
+            <p className="text-xs leading-relaxed text-moss-600">{b.text}</p>
+          </li>
+        ))}
+      </motion.ul>
+
+      {/* ---------- What is PlantRx ---------- */}
+      <motion.section {...REVEAL} viewport={VIEWPORT} transition={{ duration: 0.5, ease: "easeOut" }} className="mt-14">
+        <SectionHeading eyebrow="What is PlantRx" title="A calm first step when your plant looks unhappy" />
+        <p className="mt-4 max-w-2xl leading-relaxed text-moss-700">
+          PlantRx is an AI-assisted plant care companion. You upload a photo, add what
+          you've noticed, and get a <strong>likely issue</strong>, an{" "}
+          <strong>estimated confidence</strong>, a plain-English explanation, and 3–5
+          practical care steps. It's not a guaranteed diagnosis and it doesn't pretend
+          to be one — it's a fast, honest starting point you can act on tonight.
+        </p>
+      </motion.section>
 
       {/* ---------- Botanical showcase ---------- */}
       <motion.div
@@ -136,14 +188,14 @@ export default function HomeScreen({ onStart, history, onOpenResult, onClearHist
           <p className="mt-4 font-display text-title font-semibold text-moss-800">
             Photo in. Care plan out.
           </p>
-          <p className="mt-1.5 max-w-[260px] text-caption leading-relaxed text-moss-600">
+          <p className="mt-1.5 max-w-[300px] text-caption leading-relaxed text-moss-600">
             A likely issue, an honest confidence level, and a few steps you can take today.
           </p>
         </div>
       </motion.div>
 
       {/* ---------- How it works ---------- */}
-      <section className="mt-14" aria-label="How it works">
+      <section id="how-it-works" className="mt-14 scroll-mt-20" aria-label="How it works">
         <SectionHeading eyebrow="How it works" title="Three steps to a happier plant" />
 
         <ol className="relative mt-8 space-y-5 lg:grid lg:grid-cols-3 lg:gap-8 lg:space-y-0">
@@ -176,6 +228,95 @@ export default function HomeScreen({ onStart, history, onOpenResult, onClearHist
           ))}
         </ol>
       </section>
+
+      {/* ---------- Plant care library preview ---------- */}
+      <section id="plant-care" className="mt-14 scroll-mt-20" aria-label="Plant care library">
+        <div className="flex items-end justify-between gap-4">
+          <SectionHeading eyebrow="Plant Care" title="Free guides for common plant problems" />
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="mb-1 shrink-0 rounded-xl font-bold text-moss-700"
+            onClick={() => onNavigate(ROUTES.plantCare)}
+          >
+            View all
+            <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
+          </Button>
+        </div>
+
+        <motion.ul {...REVEAL} viewport={VIEWPORT} transition={{ duration: 0.5, ease: "easeOut" }} className="mt-6 grid gap-3 sm:grid-cols-2">
+          {GUIDES.slice(0, 4).map((guide) => (
+            <li key={guide.slug}>
+              <button
+                type="button"
+                onClick={() => onNavigate(ROUTES.article, guide.slug)}
+                className="ring-focus flex w-full items-start gap-3 rounded-2xl border border-moss-100 bg-white p-4 text-left shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-moss-200 hover:shadow-lift"
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-moss-50">
+                  <BookOpen className="h-4 w-4 text-moss-500" aria-hidden="true" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-bold text-moss-800">{guide.title}</span>
+                  <span className="mt-0.5 block text-xs leading-relaxed text-moss-600">
+                    {guide.description}
+                  </span>
+                </span>
+                <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-moss-300" aria-hidden="true" />
+              </button>
+            </li>
+          ))}
+        </motion.ul>
+      </section>
+
+      {/* ---------- FAQ preview ---------- */}
+      <section id="faq" className="mt-14 scroll-mt-20" aria-label="Frequently asked questions">
+        <div className="flex items-end justify-between gap-4">
+          <SectionHeading eyebrow="FAQ" title="Questions, answered honestly" />
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="mb-1 shrink-0 rounded-xl font-bold text-moss-700"
+            onClick={() => onNavigate(ROUTES.faq)}
+          >
+            All FAQs
+            <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
+          </Button>
+        </div>
+        <motion.div {...REVEAL} viewport={VIEWPORT} transition={{ duration: 0.5, ease: "easeOut" }} className="mt-6">
+          <Accordion items={FAQS.slice(0, 4)} />
+        </motion.div>
+      </section>
+
+      {/* ---------- Responsible AI ---------- */}
+      <motion.section
+        {...REVEAL}
+        viewport={VIEWPORT}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="mt-14 rounded-3xl border border-moss-100 bg-moss-50 p-6"
+        aria-label="About AI accuracy"
+      >
+        <p className="flex items-center gap-2 font-display text-title font-semibold text-moss-800">
+          <ScanSearch className="h-5 w-5 text-moss-500" aria-hidden="true" />
+          Honest about AI
+        </p>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-moss-600">
+          PlantRx provides AI-assisted plant care guidance for informational purposes.
+          Plant conditions can have multiple causes, so results should be treated as a
+          starting point rather than a guaranteed diagnosis.
+        </p>
+        <Button
+          type="button"
+          variant="link"
+          size="sm"
+          className="mt-2 h-auto p-0 text-sm font-bold text-moss-700"
+          onClick={() => onNavigate(ROUTES.disclaimer)}
+        >
+          Read the full disclaimer
+          <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
+        </Button>
+      </motion.section>
 
       {/* ---------- Recent diagnoses ---------- */}
       <section className="mt-14" aria-label="Recent diagnoses">
@@ -233,18 +374,6 @@ export default function HomeScreen({ onStart, history, onOpenResult, onClearHist
           </motion.div>
         )}
       </section>
-
-      {/* ---------- Footer ---------- */}
-      <footer className="mt-16 text-center">
-        <div className="flex items-center justify-center gap-4">
-          <PrivacyDialog />
-        </div>
-        <p className="mt-4 text-caption leading-relaxed text-moss-600">
-          PlantRx gives friendly, AI-powered suggestions — not a guarantee.
-          <br />
-          For plants you truly can't save, a local nursery knows best. 🌱
-        </p>
-      </footer>
     </div>
   );
 }

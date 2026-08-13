@@ -98,11 +98,16 @@ vercel --prod   # production
 The app is fully usable with no ads; the slot renders a placeholder box.
 
 1. Get your site approved in [Google AdSense](https://adsense.google.com/).
-2. Put your real publisher ID (`ca-pub-…`) in **two places**:
-   - `index.html` — uncomment the script tag and replace the placeholder ID.
-   - `src/components/AdSlot.jsx` — `data-ad-client`.
-3. Replace the placeholder `data-ad-slot` in `AdSlot.jsx` with a real slot ID.
+2. The site-verification script is already live in `index.html` with the real
+   publisher ID.
+3. To activate the slot: replace the placeholder `data-ad-client`
+   (`ca-pub-XXXXXXXXXXXXXXXX`) and `data-ad-slot` (`1234567890`) in
+   `src/components/AdSlot.jsx` with your real IDs.
 4. Redeploy.
+
+Until real IDs are set, the slot renders a clearly-labelled placeholder box
+and deliberately does **not** call `adsbygoogle.push` — so the AdSense review
+isn't hit with requests carrying fake IDs.
 
 The slot is a standard responsive banner (`data-ad-format="auto"`) placed
 directly below the result card. No popups, no autoplay video, nothing that
@@ -122,16 +127,38 @@ Diagnoses are kept on-device only: the last 3 show on the Home screen as
 "Recent diagnoses" (text metadata — no image data is stored). Clear your
 browser data to remove them.
 
+## Content pages & routes
+
+PlantRx has real pathname routes (no router dependency — built on the app's own
+history-based navigation):
+
+- `/` — home (hero, benefits, how it works, plant care preview, FAQ, responsible-AI note)
+- `/diagnose` — the diagnosis flow
+- `/about` — what PlantRx is and its honest limitations
+- `/plant-care` + `/plant-care/<slug>` — 8 original houseplant guides
+- `/faq` — honest answers matching the actual implementation
+- `/privacy`, `/terms`, `/disclaimer`, `/contact` — trust pages
+
+Unknown paths fall back to the home screen. On Vercel, `vercel.json` rewrites
+these routes to `index.html`. **Before going live:** replace the placeholder
+site domain in `src/lib/seo.js` (`SITE_URL`), `public/sitemap.xml`,
+`public/robots.txt`, and the canonical link in `index.html`.
+
 ## Project structure
 
 ```
 api/diagnose.js          Vercel serverless function (Gemini call + rate limit)
 scripts/dev-api.mjs      Local API server for development (mock mode included)
 src/
-  App.jsx                Screen state machine + framer-motion transitions + toasts
-  components/            Home, Capture, Loading, Result, Error, AdSlot
+  App.jsx                Route/screen state machine + framer-motion transitions + toasts
+  components/            Navbar, Footer, PageShell, Home, Capture, Loading, Result,
+                         Error, AdSlot, BrandMark, Accordion, …
   components/ui/         shadcn/ui components (button, card, dialog)
-  lib/                   api.js, image.js (compression), errors.js, history.js
+  pages/                 ContentRoutes.jsx — About, Plant Care, FAQ, Privacy, Terms,
+                         Disclaimer, Contact (lazy-loaded as one chunk)
+  data/                  guides.js (8 plant-care guides), faq.js
+  lib/                   api.js, image.js (compression), errors.js, history.js,
+                         routes.js (route table), seo.js (per-page meta)
   assets/                loading-plant.json (local Lottie animation)
   index.css              Tailwind v4 theme + moss palette
 ```

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">PlantRx</string>
+    <string name="title_activity_main">PlantRx</string>
+    <string name="package_name">com.plantrx.app</string>
+    <string name="custom_url_scheme">com.plantrx.app</string>
+</resources>

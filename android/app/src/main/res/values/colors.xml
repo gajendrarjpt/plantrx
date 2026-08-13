@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- PlantRx moss palette (matches the web app). -->
+    <color name="colorPrimary">#407040</color>
+    <color name="colorPrimaryDark">#2b492e</color>
+    <color name="colorAccent">#dea13b</color>
+
+    <color name="moss_600">#407040</color>
+    <color name="moss_800">#2b492e</color>
+    <color name="moss_900">#243c27</color>
+    <color name="cream">#f7f9f4</color>
+
+    <!-- Launcher + splash (ic_launcher_background lives in ic_launcher_background.xml) -->
+    <color name="splash_background">#f7f9f4</color>
+    <color name="status_bar">#2b492e</color>
+</resources>

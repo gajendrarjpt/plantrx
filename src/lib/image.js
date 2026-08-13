@@ -58,7 +58,10 @@ export function compressForDiagnosis(source) {
 }
 
 export function isReasonableUpload(file) {
-  return file.type.startsWith("image/") && file.size <= MAX_FILE_BYTES;
+  // Some mobile gallery pickers report an empty MIME type for valid photos,
+  // so accept those too — they'll fail gracefully downstream if unreadable.
+  const looksLikeImage = !file.type || file.type.startsWith("image/");
+  return looksLikeImage && file.size <= MAX_FILE_BYTES;
 }
 
 /**

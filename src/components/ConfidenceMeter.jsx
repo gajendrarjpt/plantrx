@@ -1,7 +1,7 @@
 const LEVELS = {
   low: {
     label: "Low confidence",
-    hint: "The photo may not tell the whole story — worth double-checking.",
+    hint: "A low-confidence estimate — the photo may not tell the whole story, so double-check in person.",
     bar: "bg-sun-400",
     badge: "bg-sun-200/70 text-moss-800",
     dot: "bg-sun-500",
@@ -9,7 +9,7 @@ const LEVELS = {
   },
   medium: {
     label: "Medium confidence",
-    hint: "A likely culprit — match it against what your plant looks like in person.",
+    hint: "A medium-confidence estimate — match it against what your plant looks like in person.",
     bar: "bg-sun-500",
     badge: "bg-sun-200/70 text-moss-800",
     dot: "bg-sun-500",
@@ -17,7 +17,7 @@ const LEVELS = {
   },
   high: {
     label: "High confidence",
-    hint: "The signs point clearly to this one.",
+    hint: "A high-confidence estimate — the visible signs point clearly to this one.",
     bar: "bg-moss-500",
     badge: "bg-moss-100 text-moss-700",
     dot: "bg-moss-500",

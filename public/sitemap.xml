@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  PlantRx sitemap — the public content routes.
+  TODO: replace https://plantrx.example.com with your real site domain after
+  deploying (keep it in sync with src/lib/seo.js SITE_URL).
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://plantrx.example.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://plantrx.example.com/about</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://plantrx.example.com/plant-care</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://plantrx.example.com/plant-care/yellow-leaves</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://plantrx.example.com/plant-care/brown-tips</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://plantrx.example.com/plant-care/overwatering-vs-underwatering</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://plantrx.example.com/plant-care/light-needs</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://plantrx.example.com/plant-care/curling-leaves</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://plantrx.example.com/plant-care/dropping-leaves</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://plantrx.example.com/plant-care/common-pests</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://plantrx.example.com/plant-care/soil-improvement</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://plantrx.example.com/faq</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://plantrx.example.com/privacy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://plantrx.example.com/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://plantrx.example.com/disclaimer</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://plantrx.example.com/contact</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>
