@@ -1,0 +1,17 @@
+{
+  "name": "PlantRx — AI Plant Diagnosis",
+  "short_name": "PlantRx",
+  "description": "Snap a photo of a struggling houseplant and get a likely diagnosis and a simple recovery plan.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f9f4",
+  "theme_color": "#2b492e",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
