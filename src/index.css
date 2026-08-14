@@ -149,6 +149,12 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  /* The leaf-fall layer is decoration only — drop it entirely (framer-motion
+     animations are JS-driven, so the duration override above doesn't reach it). */
+  .falling-leaves {
+    display: none;
+  }
 }
 
 /* ============================================================

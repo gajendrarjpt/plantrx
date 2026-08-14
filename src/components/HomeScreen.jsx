@@ -4,7 +4,6 @@ import {
   BookOpen,
   Camera,
   ChevronRight,
-  Leaf,
   NotebookPen,
   ScanSearch,
   ShieldCheck,
@@ -26,6 +25,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import SectionHeading from "./SectionHeading";
+import ShowcaseMark from "./ShowcaseMark";
+import FallingLeaves from "./FallingLeaves";
 import EmptyHistory from "./EmptyHistory";
 import Accordion from "./Accordion";
 import { FAQS } from "@/data/faq";
@@ -87,6 +88,8 @@ function formatDate(ts) {
 export default function HomeScreen({ onStart, history, onOpenResult, onClearHistory, onNavigate }) {
   return (
     <div className="mx-auto w-full max-w-3xl px-4 pb-16 pt-10">
+      {/* Gentle leaf-fall behind the whole home screen (decorative only) */}
+      <FallingLeaves />
       {/* ---------- Hero ---------- */}
       <motion.header
         className="text-center"
@@ -172,19 +175,7 @@ export default function HomeScreen({ onStart, history, onOpenResult, onClearHist
           }}
         />
         <div className="relative flex flex-col items-center px-6 py-10 text-center">
-          <div className="relative flex h-24 w-24 items-center justify-center">
-            <Leaf
-              className="absolute h-24 w-24 rotate-[-14deg] text-moss-300/80"
-              strokeWidth={1.2}
-              aria-hidden="true"
-            />
-            <Leaf
-              className="absolute h-20 w-20 rotate-[10deg] text-moss-400/90"
-              strokeWidth={1.4}
-              aria-hidden="true"
-            />
-            <Leaf className="relative h-12 w-12 text-moss-600" strokeWidth={1.8} aria-hidden="true" />
-          </div>
+          <ShowcaseMark />
           <p className="mt-4 font-display text-title font-semibold text-moss-800">
             Photo in. Care plan out.
           </p>
