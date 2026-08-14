@@ -7,8 +7,23 @@ import { IS_ANDROID } from "@/lib/platform";
 const PLACEHOLDER_ID = "ca-pub-XXXXXXXXXXXXXXXX";
 const PUBLISHER_ID_IS_PLACEHOLDER = PLACEHOLDER_ID.includes("XXXX");
 
+// Approved placements. AdSense may only be rendered on manually reviewed
+// editorial content — the Plant Care guide articles. Product/utility screens
+// (diagnosis result, capture, camera, loading, error, history, home,
+// navigation, privacy, terms, etc.) are prohibited and must never mount
+// AdSense, hidden or otherwise.
+const APPROVED_PLACEMENTS = ["editorial-guide"];
+
 /**
- * Responsive AdSense banner slot, shown directly below the result card.
+ * Responsive AdSense banner slot.
+ *
+ * Placement rules (enforced here and by usage):
+ *  - The component renders NOTHING unless given an approved placement —
+ *    currently only `placement="editorial-guide"` from a Plant Care article
+ *    page, placed after substantial article content.
+ *  - It is NOT used on diagnosis results, capture, home, or any other screen.
+ *  - On Android the component renders the AdMob placeholder instead (Google's
+ *    product for mobile apps); AdSense never runs there.
  *
  * To activate real ads once your AdSense account is approved:
  *  1. Put your real publisher ID in the data-ad-client below (and it's
@@ -16,24 +31,29 @@ const PUBLISHER_ID_IS_PLACEHOLDER = PLACEHOLDER_ID.includes("XXXX");
  *  2. Replace data-ad-slot with a real slot ID from your AdSense dashboard.
  *
  * Until then this renders a small, clearly-labeled placeholder box — it never
- * blocks or covers the diagnosis content, and it deliberately does NOT call
+ * blocks or covers the article content, and it deliberately does NOT call
  * the adsbygoogle push while the IDs are placeholders, so the AdSense review
  * isn't hit with malformed ad requests.
  */
-export default function AdSlot() {
+export default function AdSlot({ placement = null }) {
+  const approved = APPROVED_PLACEMENTS.includes(placement);
+
   useEffect(() => {
     // Only hydrate the slot once real IDs are configured. With placeholders,
     // pushing would send Google a request with fake client/slot IDs. And on
     // Android this whole effect is dead code (AdSense never runs there —
     // monetization is AdMob), kept as a belt-and-braces guard in case the
     // build ever loses tree-shaking.
-    if (PUBLISHER_ID_IS_PLACEHOLDER || IS_ANDROID) return;
+    if (!approved || PUBLISHER_ID_IS_PLACEHOLDER || IS_ANDROID) return;
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch {
       /* AdSense not available */
     }
-  }, []);
+  }, [approved]);
+
+  // Not an approved editorial placement — never render ad code.
+  if (!approved) return null;
 
   // Android: monetization goes through Google AdMob (Google's product for
   // mobile apps), never AdSense. This is a labelled placeholder until an

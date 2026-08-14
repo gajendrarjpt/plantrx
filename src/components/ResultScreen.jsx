@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import ConfidenceMeter from "./ConfidenceMeter";
 import FixChecklist from "./FixChecklist";
 import ShareDiagnosis from "./ShareDiagnosis";
-import AdSlot from "./AdSlot";
 
 const sectionMotion = (delay = 0) => ({
   initial: { opacity: 0, y: 14 },
@@ -17,7 +16,7 @@ const sectionMotion = (delay = 0) => ({
  * The diagnosis report. Structure:
  * photo → likely issue → estimated confidence → what we noticed →
  * your care plan → step-by-step fixes → when to seek help →
- * AI disclaimer → actions → ad slot.
+ * AI disclaimer → actions. No ads on the diagnosis screen.
  */
 export default function ResultScreen({ result, photo, onDiagnoseAnother, onHome }) {
   return (
@@ -141,8 +140,8 @@ export default function ResultScreen({ result, photo, onDiagnoseAnother, onHome 
         </Button>
       </motion.div>
 
-      {/* Ad slot sits directly below the result — never above it */}
-      <AdSlot />
+      {/* No ad slot on the diagnosis screen — ads belong on editorial
+          Plant Care guide pages only (see AdSlot placement rules). */}
     </div>
   );
 }

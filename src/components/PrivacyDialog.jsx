@@ -31,8 +31,8 @@ const POINTS = [
     text: "Avoid photographing personal or sensitive information — stick to the plant.",
   },
   {
-    title: "Advertising may come later",
-    text: "A clearly marked ad slot may be introduced below results in the future.",
+    title: "Ads stay on editorial pages only",
+    text: "Advertisements, when shown, appear only on Plant Care editorial guide pages — clearly marked and below the article. Diagnosis screens stay ad-free.",
   },
 ];
 

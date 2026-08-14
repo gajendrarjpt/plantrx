@@ -20,7 +20,7 @@ export const GUIDES = [
     ],
     causes: [
       "Overwatering is the most common cause — roots sit in wet soil and stop taking up nutrients",
-      "Underwatering leaves leaves dehydrated and pale",
+      "Underwatering leaves foliage dehydrated and pale",
       "Lack of light slows photosynthesis and drains leaf color",
       "Nutrient shortage (usually nitrogen) shows first in older leaves",
       "Sudden temperature or location changes",

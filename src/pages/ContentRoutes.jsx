@@ -3,6 +3,7 @@ import { ArrowRight, BookOpen, Camera, Leaf, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Accordion from "@/components/Accordion";
 import PageShell, { PageHeader, SectionTitle } from "@/components/PageShell";
+import AdSlot from "@/components/AdSlot";
 import { usePageMeta, SITE_URL } from "@/lib/seo";
 import { CONTACT_EMAIL } from "@/lib/config";
 import { FAQS } from "@/data/faq";
@@ -214,6 +215,11 @@ function PlantCareArticlePage({ slug, navigate, onDiagnose }) {
           ))}
         </div>
 
+        {/* AdSense: only on editorial guide pages, only after substantial
+            article content (symptoms → causes → checks → steps → prevention
+            → FAQ). Never on product/utility screens. */}
+        <AdSlot placement="editorial-guide" />
+
         {related.length > 0 && (
           <>
             <SectionTitle>Related guides</SectionTitle>
@@ -311,14 +317,17 @@ function PrivacyPage({ navigate, onDiagnose }) {
           <strong>Third-party services.</strong> Google Gemini processes the photo and
           note as part of the diagnosis. The app also loads the Fraunces display font
           from Google Fonts. If advertising is enabled, Google AdSense may set
-          cookies and process usage data on the pages where ads appear; we keep ads
-          clearly marked and below the diagnosis.
+          cookies and process usage data on the Plant Care editorial guide pages
+          where ads appear; we keep ads clearly marked and below the article content
+          — never on diagnosis screens.
         </p>
         <p>
           <strong>Advertising.</strong> PlantRx may show a clearly labelled ad slot
-          below diagnosis results. We don't use pop-ups, autoplay video, or
-          full-screen ads. Ad networks may use cookies to show relevant ads; you can
-          control this through your browser or Google's ad settings.
+          on its Plant Care editorial guide pages, placed below the article content.
+          Product screens — diagnosis results, photo capture, home, and similar —
+          are kept ad-free. We don't use pop-ups, autoplay video, or full-screen
+          ads. Ad networks may use cookies to show relevant ads; you can control
+          this through your browser or Google's ad settings.
         </p>
         <p>
           <strong>Contact & data deletion.</strong> Since PlantRx doesn't store your
